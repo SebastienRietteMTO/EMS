@@ -5,6 +5,8 @@
 #------------------------------------------------------------
 set -ex
 
+date
+
 export OMP_NUM_THREADS=1
 
 export DR_HOOK_IGNORE_SIGNALS=-1

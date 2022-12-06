@@ -282,7 +282,8 @@ def install_run(model,case,subcase,filecase,repout,config,configOut,loverwrite=F
             raise
 
         # Preparation fichier config de la simulation
-        with open('param_' + config['name'], 'w') as g:
+        paramfilename = 'param_' + config['name']
+        with open(paramfilename, 'w') as g:
             g.write('#!/bin/sh\n')
             g.write('set -x\n')
             g.write('#\n')
@@ -314,27 +315,15 @@ def install_run(model,case,subcase,filecase,repout,config,configOut,loverwrite=F
             g.write('variablesDict=' + configOut['variablesDict'] + '\n')
             g.write('installpost=True\n')
             g.write('runpost=True\n')
-
-        # Preparation fichier d'execution de la simulation
-        with open('exec.sh', 'w') as g:
-            g.write('#!/bin/sh\n')
-            g.write('set -x\n')
-            g.write('date\n')
-            g.write('rm -f param\n')
-            g.write('ln -s param_' + config['name'] + ' param\n')
-            g.write('. ./param\n')
-            g.write('. ./run.sh > run_${CONFIG}.log 2>&1\n')
-            g.write('mv run_${CONFIG}.log listings/\n')
-            g.write('echo log file: logs/run_${CONFIG}.log\n')
-            g.write('date')
-
-        os.chmod('exec.sh', os.stat('exec.sh').st_mode | stat.S_IEXEC)
+        if os.path.exists('param'):
+          os.remove(param)
+        os.symlink(paramfilename, 'param')
 
         t0 = perf(t0, 'Prepare Run')
 
         # Execution de la simulation
-        with open('exec.log', 'w') as log:
-            p = subprocess.run('exec.sh', cwd=rep, stderr=subprocess.STDOUT, stdout=log)
+        with open('listings/run_{0}.log'.format(config['name']), 'w') as log:
+            p = subprocess.run('run.sh', cwd=rep, stderr=subprocess.STDOUT, stdout=log)
             if p.returncode != 0:
                 raise RuntimeError("Error during MUSC execution (log: {})".format(os.path.abspath(log.name)))
 
