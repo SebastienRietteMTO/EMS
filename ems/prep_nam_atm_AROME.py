@@ -67,6 +67,9 @@ def prep_nam_atm(ncfile, namin, timestep, namout='namarp', lsurfex=False):
         if k.endswith('%LSLHD') or k.endswith('%LCOMAD'):
             nam['NAMGFL'][k] = ['.FALSE.']
 
+    #Deactivate IAU
+    nam['NAMIAU']['LIAU'] = ['.FALSE.']
+
     #Deactivate predictor-corrector
     nam['NAMDYNA']['LPC_CHEAP'] = ['.FALSE.']
     nam['NAMDYNA']['LPC_FULL'] = ['.FALSE.']
