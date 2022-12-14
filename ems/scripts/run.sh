@@ -12,7 +12,7 @@ export OMP_NUM_THREADS=1
 export DR_HOOK_IGNORE_SIGNALS=-1
 export DR_HOOK=0
 
-if [ $model = "AROME" ] || [ $model = "ARPPNT" ] ; then
+if [ "$model" = "AROME" ] || [ "$model" = "ARPPNT" ] ; then
   export LIBRARY_PATH=$LIBRARY_PATH:/usr/lib/x86_64-linux-gnu
   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/common/sync/gcc/mpfr-3.1.3/lib:/home/common/sync/gcc/jasper-1.900.1/lib:/home/common/sync/gcc/torque:/opt/google/earth/pro
   export C_INCLUDE_PATH=$C_INCLUDE_PATH:/usr/include/x86_64-linux-gnu

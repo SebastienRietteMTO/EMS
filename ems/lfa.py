@@ -81,7 +81,7 @@ def lfareader(lib):
                     (data, fieldlength) = self._wlfaleci(fieldname, fieldlength)
                 elif fieldtype[0] == 'C':
                     (data, fieldlength) = self._wlfalecc(fieldname, fieldlength)
-                    data = [data[i].strip().decode() for i in range(fieldlength)]
+                    #data = [data[i].strip().decode() for i in range(fieldlength)]
                 return data
             def _wlfacas(self, fieldname):
                 returncode, length = ctypes.c_longlong(), ctypes.c_longlong()
@@ -150,7 +150,7 @@ def lfareader(lib):
                                  ctypes.c_longlong(len(fieldname.encode("utf-8"))))
                 assert returncode.value == 0, "Error reading article " + fieldname + \
                                               " on file " + self.filename
-                result = [result[i].strip().decode() for i in range(fieldlength)]
+                result = numpy.array([result[i].strip().decode() for i in range(fieldlength)]) # keep it as numpy.array as for other values
                 return result, length.value
             def close(self):
                 _solib.wlfafer_.argtypes = [ctypes.POINTER(ctypes.c_longlong)] #logical unit
