@@ -156,6 +156,8 @@ def prep_nam_atm(ncfile, namin, timestep, namout='namarp', lsurfex=False):
             nam[nn]['Y' + var + '_NL%NREQIN'] = ['1']
         else:
             nam[nn]['Y' + var + '_NL%NREQIN'] = ['0']
+    if 'YQ_NL%LVWENO' in nam[nn]:
+        nam[nn]['YQ_NL%LVWENO']  = ['.FALSE.']
 
     # Update due to MUSC/ALADIN config
     nn = 'NAMDYN'
